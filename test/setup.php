@@ -7,7 +7,8 @@ $libs = array(
   'ext'      => 'https://ajax.googleapis.com/ajax/libs/ext-core/3.1.0/ext-core-debug.js',
   'jquery'   => 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js',
   'mootools' => 'https://ajax.googleapis.com/ajax/libs/mootools/1.3.0/mootools.js',
-  'yui'      => 'http://yui.yahooapis.com/3.3.0/build/yui/yui.js'
+  'yui'      => 'http://yui.yahooapis.com/3.3.0/build/yui/yui.js',
+  'd3.v2'    => 'https://raw.github.com/mbostock/d3/master/d3.v2.js'
 );
 
 // Download latest JSMin and compile it.
@@ -30,5 +31,11 @@ foreach($libs as $name => $url) {
 // Copy utf-8 file to the libs directory
 echo "Copying UTF-8 file with BOM...\n";
 copy(__DIR__ . '/utf8-with-bom.js', __DIR__ . '/libs/utf8-with-bom.js');
+
+echo "Copying D3 partial file...\n";
+copy(__DIR__ . '/d3.partial.js', __DIR__ . '/libs/d3.partial.js');
+
+echo "Copying other D3 partial file...\n";
+copy(__DIR__ . '/d3.partial2.js', __DIR__ . '/libs/d3.partial2.js');
 
 echo "Done\n";

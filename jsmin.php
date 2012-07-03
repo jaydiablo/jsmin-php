@@ -129,7 +129,8 @@ class JSMin {
               break;
             }
 
-            if (ord($this->a) <= self::ORD_LF) {
+            //if (ord($this->a) <= self::ORD_LF) {
+            if ($this->a === null) {
               throw new JSMinException('Unterminated string literal.');
             }
 
@@ -169,8 +170,9 @@ class JSMin {
                 } elseif ($this->a === '\\') {
                   $this->output .= $this->a;
                   $this->a       = $this->get();
-                } elseif (ord($this->a) <= self::ORD_LF) {
-                  throw new JSMinException('Unterminated regular expression set in regex literal.');
+                //} elseif (ord($this->a) <= self::ORD_LF) {
+                } elseif ($this->a === null) {
+                  throw new JSMinException('Unterminated set in Regular Expression literal.');
                 }
               }
             } elseif ($this->a === '/') {
@@ -178,8 +180,9 @@ class JSMin {
             } elseif ($this->a === '\\') {
               $this->output .= $this->a;
               $this->a       = $this->get();
-            } elseif (ord($this->a) <= self::ORD_LF) {
-              throw new JSMinException('Unterminated regular expression literal.');
+            //} elseif (ord($this->a) <= self::ORD_LF) {
+            } elseif ($this->a === null) {
+              throw new JSMinException('Unterminated Regular Expression literal.');
             }
 
             $this->output .= $this->a;
@@ -390,4 +393,3 @@ class JSMin {
 
 // -- Exceptions ---------------------------------------------------------------
 class JSMinException extends Exception {}
-?>
