@@ -13,7 +13,8 @@ $libs = array(
   'd3.v2',
   'modernizr',
   'd3.partial',
-  'd3.partial2'
+  'd3.partial2',
+  'issue10'
 );
 
 $descriptorspec = array(

@@ -39,4 +39,7 @@ copy(__DIR__ . '/d3.partial.js', __DIR__ . '/libs/d3.partial.js');
 echo "Copying other D3 partial file...\n";
 copy(__DIR__ . '/d3.partial2.js', __DIR__ . '/libs/d3.partial2.js');
 
+echo "Copying issue10 file...\n";
+copy(__DIR__ . '/issue10.js', __DIR__ . '/libs/issue10.js');
+
 echo "Done\n";
