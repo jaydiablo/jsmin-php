@@ -11,6 +11,7 @@ $libs = array(
   'yui',
   'utf8-with-bom',
   'd3.v2',
+  'modernizr',
   'd3.partial',
   'd3.partial2'
 );

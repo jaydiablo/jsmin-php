@@ -8,7 +8,8 @@ $libs = array(
   'jquery'   => 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.js',
   'mootools' => 'https://ajax.googleapis.com/ajax/libs/mootools/1.3.0/mootools.js',
   'yui'      => 'http://yui.yahooapis.com/3.3.0/build/yui/yui.js',
-  'd3.v2'    => 'https://raw.github.com/mbostock/d3/master/d3.v2.js'
+  'd3.v2'    => 'https://raw.github.com/mbostock/d3/master/d3.v2.js',
+  'modernizr'=> 'https://raw.github.com/Modernizr/Modernizr/master/modernizr.js',
 );
 
 // Download latest JSMin and compile it.
