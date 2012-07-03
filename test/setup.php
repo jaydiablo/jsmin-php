@@ -10,6 +10,7 @@ $libs = array(
   'yui'      => 'http://yui.yahooapis.com/3.3.0/build/yui/yui.js',
   'd3.v2'    => 'https://raw.github.com/mbostock/d3/master/d3.v2.js',
   'modernizr'=> 'https://raw.github.com/Modernizr/Modernizr/master/modernizr.js',
+  'mif.tree' => 'http://mifjs.net/tree/Download/file/mif.tree-v1.2.6.4.js',
 );
 
 // Download latest JSMin and compile it.

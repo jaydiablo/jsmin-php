@@ -14,7 +14,8 @@ $libs = array(
   'modernizr',
   'd3.partial',
   'd3.partial2',
-  'issue10'
+  'issue10',
+  'mif.tree',
 );
 
 $descriptorspec = array(
