@@ -3,19 +3,55 @@
 error_reporting(E_STRICT);
 require '../jsmin.php';
 
+function output($text, $status = null) {
+  switch ($status) {
+    case 'pass':
+      $out = "[0;32m";
+      break;
+    case 'fail':
+      $out = "[0;31m";
+      break;
+    default:
+      $out = "[0m";
+      break;
+  }
+
+  echo chr(27)."$out$text".chr(27)."[0m"."\n";
+}
+
 $libs = array(
   'dojo',
   'ext',
   'jquery',
   'mootools',
   'yui',
-  'utf8-with-bom',
   'd3.v2',
   'modernizr',
-  'd3.partial',
-  'd3.partial2',
-  'issue10',
   'mif.tree',
+);
+
+$cases = array(
+  'inline-unary' => array(
+    //'source' => 'inline-unary',
+    //'expected' => 'inline-unary.expected',
+    'exception' => false
+  ),
+  'utf8-with-bom' => array(
+    'exception' => false
+  ),
+  'division-newline-with-comment' => array(
+    'exception' => false
+  ),
+  'division-newline' => array(
+    'expected' => null,
+    'exception' => 'Unterminated Regular Expression literal.'
+  ),
+  'issue10' => array(
+    'exception' => false
+  ),
+  'bootstrap-exclamation' => array(
+    'exception' => false
+  ),
 );
 
 $descriptorspec = array(
@@ -23,6 +59,9 @@ $descriptorspec = array(
   1 => array("pipe", "w"),  // stdout
   2 => array("pipe", "w"),  // stderr
 );
+
+echo "\nJSMIN PHP Test Suite\n\n";
+echo "Comparing PHP minification to C minification of defined libs\n\n";
 
 foreach ($libs as $lib) {
   echo "Testing $lib ";
@@ -40,24 +79,61 @@ foreach ($libs as $lib) {
     $jsmin_php = JSMin::minify(file_get_contents(__DIR__ . "/libs/$lib.js"));
 
     if ($jsmin_err != '') {
-      echo "[FAIL]\n";
-      echo "==> jsmin.c threw an error but jsmin.php did not. Error: $jsmin_err\n";
+      output("[FAIL]", 'fail');
+      output("==> jsmin.c threw an error but jsmin.php did not. Error: $jsmin_err");
     } else {
       if ($jsmin_c === $jsmin_php) {
-        echo "[PASS]\n";
+        output("[PASS]", 'pass');
       } else {
-        echo "[FAIL]\n";
-        echo "==> Output differs between jsmin.c and jsmin.php.\n";
+        output("[FAIL]", 'fail');
+        output("==> Output differs between jsmin.c and jsmin.php.");
       }
     }
   } catch (Exception $e) {
     if ($jsmin_err != '' && trim($jsmin_err) == trim($e->getMessage())) {
-      echo "[PASS]\n";
+      output("[PASS]", 'pass');
     } else {
-      echo "[FAIL]\n";
-      echo "==> Caught an exception processing file: " . $e->getMessage() . "\n";
+      output("[FAIL]", 'fail');
+      output("==> Caught an exception processing file: " . $e->getMessage());
     }
   }
 }
 
-echo "Done.\n";
+echo "\nComparing minification to expected output of defined test cases\n\n";
+
+foreach ($cases as $name => $case) {
+  echo "Testing $name ";
+
+  if (!isset($case['source'])) {
+    $case['source'] = $name;
+  }
+
+  if (!isset($case['expected'])) {
+    $case['expected'] = $name . '.expected';
+  }
+
+  try {
+    $minified = JSMin::minify(file_get_contents(__DIR__ . "/cases/" . $case['source'] . ".js"));
+
+    if ($minified === file_get_contents(__DIR__ . "/cases/" . $case['expected'] . ".js")) {
+      output("[PASS]", 'pass');
+    } else {
+      output("[FAIL]", 'fail');
+      output("==> Minified output didn't match the expected output");
+    }
+  } catch (Exception $e) {
+    if ($case['exception'] !== false) {
+      if ($case['exception'] === $e->getMessage()) {
+        output("[PASS]", 'pass');
+      } else {
+        output("[FAIL]", 'fail');
+        output("==> The exception thrown by JSMin (" . $e->getMessage() . ") didn't match the expected exception (" . $case['exception'] . ")");
+      }
+    } else {
+      output("[FAIL]", 'fail');
+      output("==> JSMin threw an Exception when minifying:" . $e->getMessage());
+    }
+  }
+}
+
+echo "\nDone.\n\n";
